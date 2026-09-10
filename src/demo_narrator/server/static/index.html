@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>demo-narrator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="appbar">
+    <div class="left">
+      <div class="brand"><span class="mark">🎬</span><span class="name">demo-narrator</span></div>
+      <nav class="tabs">
+        <a href="#/" data-nav="projects">Projects</a>
+        <a href="#/library" data-nav="library">Library</a>
+        <a href="#/jobs" data-nav="jobs">Jobs</a>
+      </nav>
+    </div>
+    <div class="right">
+      <span class="envchip" id="envClaude"></span>
+      <span class="envchip" id="envTts"></span>
+      <div class="avatar" id="avatar">DN</div>
+    </div>
+  </header>
+  <div id="chrome"></div>
+  <main id="view"></main>
+  <script src="/static/editor.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

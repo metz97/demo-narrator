@@ -1,0 +1,20 @@
+# Generated flow for LCA - Project - Copy and paste an object. Review before running:
+#   demo-narrator demo --project lca-tool --flow profiles/lca-tool/flows/task-90396-generated.demoflow.yaml
+
+name: task-90396-generated
+title: LCA - Project - Copy and paste an object
+project: lca-tool
+locale: en
+beats:
+- task: 90396
+  title: LCA - Project - Copy and paste an object
+  steps:
+  - action: click
+    locator:
+      role: button
+      name: allow cookies
+    settle_ms: 600
+  - action: goto
+    path: /projects
+    say: The projects list opens, ready to select a carbon assessment to explore.
+version: 1

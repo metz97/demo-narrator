@@ -1,0 +1,57 @@
+# demo-narrator configuration (copy to config/config.yaml and adjust).
+# SECRETS DO NOT BELONG HERE — they come from environment variables / .env:
+#   ANTHROPIC_API_KEY, ELEVENLABS_API_KEY, AZURE_DEVOPS_EXT_PAT
+# Every key below is optional; omitted keys use the defaults shown.
+
+ffmpeg:
+  # Bare names use PATH; set absolute paths if ffmpeg is installed elsewhere.
+  ffmpeg_path: ffmpeg
+  ffprobe_path: ffprobe
+
+segmentation:
+  scene_threshold: 0.25        # lower = more sensitive (web apps have subtle transitions)
+  min_segment_sec: 4.0         # shorter scenes merge into a neighbour
+  max_keyframes_per_segment: 3 # 1-3 representative frames per segment
+  keyframe_max_edge: 1568      # downscale long edge (controls Claude vision token cost)
+  min_video_duration_sec: 10.0 # inputs shorter than this are rejected
+
+claude:
+  # agent_sdk (default): uses your Claude subscription via the Claude Code CLI.
+  # api_key:             calls the Anthropic API directly with ANTHROPIC_API_KEY.
+  mode: agent_sdk
+  max_repair_attempts: 1       # one shortening pass for over-budget narration
+  agent_sdk:
+    model: null                # null = your Claude Code default; or "opus"/"sonnet"/full id
+    max_turns: 40
+  api_key:
+    model: claude-opus-4-8
+    max_tokens: 16000
+
+tts:
+  provider: kokoro             # kokoro (free, local) | elevenlabs (paid, higher polish)
+  max_tts_characters: 10000    # hard cap, enforced for PAID providers only
+  kokoro:
+    voice: af_heart            # see https://huggingface.co/hexgrad/Kokoro-82M/tree/main/voices
+    lang_code: a               # a = American English, b = British English
+    speed: 1.0
+  elevenlabs:
+    voice_id: 21m00Tcm4TlvDq8ikWAM   # "Rachel"
+    model_id: eleven_multilingual_v2
+    stability: 0.5
+    similarity_boost: 0.75
+
+assembly:
+  fade_ms: 50                  # gentle fade at each narration boundary (anti-click)
+  video_crf: 20
+  video_preset: medium
+  audio_sample_rate: 44100
+  audio_bitrate: 192k
+
+azure_devops:                  # only needed for --sprint / --task
+  organization: ""             # e.g. https://dev.azure.com/yourorg
+  project: ""
+  team: ""
+
+output_dir: output
+style_path: config/style.md
+glossary_path: config/glossary.json

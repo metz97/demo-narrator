@@ -1,0 +1,47 @@
+# Generated flow for LCA - Carbon assessment analytics. Review before running:
+#   demo-narrator demo --project lca-tool --flow profiles/lca-tool/flows/task-92163-generated.demoflow.yaml
+
+name: task-92163-generated
+title: LCA - Carbon assessment analytics
+project: lca-tool
+locale: en
+beats:
+- task: 92163
+  title: LCA - Carbon assessment analytics
+  steps:
+  - action: goto
+    path: /projects/overview/0f510233-859a-43d4-b724-5df9db5ea3a3/assessment/3a0cf070-44d0-49d6-814c-cc33040ecf55?tab=analytics
+    say: The carbon assessment now has an Analytics tab that visualises a project's
+      embodied carbon.
+    settle_ms: 3500
+  - action: wait_for
+    locator:
+      text: All elements - Pie chart
+  - action: scroll_to
+    locator:
+      text: All elements - Pie chart
+    say: A pie chart breaks the total A1-A3 carbon down by element category.
+    min_duration_sec: 1.0
+  - action: highlight
+    locator:
+      text: Substructure
+      nth: 0
+    say: Substructure is the largest contributor here, at zero point three one two
+      tonnes, shown beside every category in the legend.
+    min_duration_sec: 3.0
+  - action: scroll_to
+    locator:
+      text: All elements - Bar chart
+    say: Below it, a bar chart compares the same categories side by side.
+    min_duration_sec: 1.0
+    settle_ms: 500
+  - action: highlight
+    locator:
+      text: Substructure
+      nth: 1
+    say: The bars make it easy to see where carbon is concentrated across the building.
+    min_duration_sec: 3.0
+  - action: dwell
+    say: These charts give every team an instant view of where the carbon sits.
+    min_duration_sec: 3.0
+version: 1

@@ -1,0 +1,65 @@
+# Task 90396 — "LCA · Project · Copy and paste an object" (Sprint 174).
+# Generated against the live app (localhost:4200) with verified selectors.
+# Non-destructive: demonstrates the workflow up to the modal, then cancels.
+
+version: 1
+name: task-90396-copy-object
+title: "Copy and paste an object in a carbon assessment"
+project: lca-tool
+locale: en
+viewport: { width: 1280, height: 720 }
+
+beats:
+  - task: 90396
+    title: "Copy and paste an object"
+    steps:
+      - action: goto
+        path: "/projects/overview/0f510233-859a-43d4-b724-5df9db5ea3a3/assessment/3a0cf070-44d0-49d6-814c-cc33040ecf55"
+        settle_ms: 3500
+        say: "This sprint adds the ability to copy and paste objects inside a carbon assessment. Here's an assessment with a few objects."
+
+      - action: wait_for
+        locator: { testid: loading-spinner }
+        state: hidden
+
+      - action: highlight
+        locator: { role: checkbox, nth: 0 }
+        min_duration_sec: 1.0
+        say: "Every object row now has a checkbox in a new column on the far left."
+
+      - action: click
+        locator: { role: checkbox, nth: 0 }
+        settle_ms: 600
+        say: "When I select one or more objects,"
+
+      - action: highlight
+        locator: { role: button, name: "Actions", nth: 0 }
+        say: "the Actions button for that sub-element becomes active."
+
+      - action: click
+        locator: { role: button, name: "Actions", nth: 0 }
+        settle_ms: 700
+        say: "It opens a menu with two options: Copy to, and Delete."
+
+      - action: click
+        locator: { role: menuitem, name: "Copy to" }
+        settle_ms: 800
+        say: "Choosing Copy to opens the copy dialog."
+
+      - action: wait_for
+        locator: { text: "Copy selection to" }
+        state: visible
+
+      - action: dwell
+        min_duration_sec: 2.0
+        say: "Here you search for a destination project, pick a carbon assessment, and choose where in the structure it should go. The Copy button stays disabled until all three are set."
+
+      - action: click
+        locator: { role: button, name: "Cancel" }
+        settle_ms: 700
+        say: "I'll cancel for this demo."
+
+      - action: highlight
+        locator: { text: "REF01 - Copy", nth: 0 }
+        min_duration_sec: 1.0
+        say: "Copied objects appear with a dash-Copy suffix — you can see an existing copy already in the table, following the naming rule from the acceptance criteria."

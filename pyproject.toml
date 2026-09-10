@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "demo-narrator"
+version = "0.1.0"
+description = "Turn a raw screen recording of a web app into a narrated demo video, fully automatically."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pydantic~=2.11",
+    "typer~=0.15",
+    "rich~=13.9",
+    "PyYAML~=6.0",
+    "python-dotenv~=1.0",
+    "httpx~=0.28",
+    "anthropic~=0.69",
+    "claude-agent-sdk~=0.1",
+]
+
+[project.optional-dependencies]
+kokoro = [
+    "kokoro~=0.9",
+    "soundfile~=0.13",
+]
+demo = [
+    "playwright~=1.61",
+]
+server = [
+    "fastapi~=0.115",
+    "uvicorn~=0.34",
+]
+dev = [
+    "pytest~=8.3",
+    "mypy~=1.14",
+    "types-PyYAML",
+]
+
+[project.scripts]
+demo-narrator = "demo_narrator.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/demo_narrator"]
+
+[tool.mypy]
+strict = true
+warn_unused_ignores = true
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["kokoro", "kokoro.*", "soundfile", "numpy", "numpy.*", "claude_agent_sdk", "claude_agent_sdk.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+
+# Playwright ships types, but the runner uses dynamic page/locator objects that
+# are intentionally left untyped (see per-function ignores); keep it lenient.
+[[tool.mypy.overrides]]
+module = ["playwright", "playwright.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = ["integration: tests that invoke real ffmpeg binaries"]

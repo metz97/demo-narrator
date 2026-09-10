@@ -1,0 +1,80 @@
+# Task 92191 — "LCA · Calculation overrides". Hand-authored from the verified path
+# (override lives in the composite-assembly editor, per the feature owner):
+# edit REF02 -> Build composite assembly -> Next -> Override checkbox beside the A1-A3 field.
+#   demo-narrator demo --project lca-tool --flow profiles/lca-tool/flows/task-92191-generated.demoflow.yaml
+
+name: task-92191-generated
+title: LCA - Calculation overrides
+project: lca-tool
+locale: en
+beats:
+- task: 92191
+  title: LCA - Calculation overrides
+  steps:
+  - action: goto
+    path: /projects
+    say: A1-A3 carbon values are normally calculated automatically, but this sprint lets teams override them.
+    settle_ms: 1200
+  - action: click
+    locator:
+      role: link
+      name: 1 Million United Kingdom Pound Project
+    say: Opening a project shows its carbon assessment.
+    settle_ms: 1500
+  - action: click
+    locator:
+      role: link
+      name: Carbon assessment
+      nth: 0
+    settle_ms: 2500
+  - action: wait_for
+    locator:
+      testid: loading-spinner
+    state: hidden
+  - action: hover
+    locator:
+      testid: a1a3-override-icon
+      nth: 0
+    say: This icon marks a composite assembly whose A1-A3 value has been manually overridden.
+    settle_ms: 800
+    min_duration_sec: 3.0
+  - action: click
+    locator:
+      testid: MoreVertIcon
+      nth: 2
+    say: Let's see how that override is set. We open the object's menu,
+    settle_ms: 900
+  - action: click
+    locator:
+      role: menuitem
+      name: Edit details
+    say: and choose Edit details for this composite assembly.
+    settle_ms: 1500
+  - action: click
+    locator:
+      role: button
+      name: Build composite assembly
+    say: We step into the composite assembly builder,
+    settle_ms: 2000
+  - action: click
+    locator:
+      role: button
+      name: Next
+    say: and continue to its details.
+    settle_ms: 2000
+  - action: highlight
+    locator:
+      role: checkbox
+      name: Override
+    say: Here is the new control — an Override toggle beside the calculated A1-A3 value.
+    settle_ms: 500
+    min_duration_sec: 3.0
+  - action: dwell
+    say: With Override enabled, the team enters a measured A1-A3 figure that replaces the automatic calculation for this assembly.
+    min_duration_sec: 4.5
+  - action: click
+    locator:
+      role: button
+      name: Cancel
+    say: We cancel without changing the data.
+    settle_ms: 800

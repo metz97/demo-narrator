@@ -1,0 +1,86 @@
+name: lca-tool
+base_url: ${LCA_BASE_URL:-https://lca-dev.cirrus.thenbs.cloud}
+route_prefix: /{locale}
+default_locale: en
+viewport:
+  width: 1280
+  height: 720
+dev_server:
+  command: npx nx run web:dev
+  cwd: C:/project/nbs/lca-tool
+  url: https://lca-dev.cirrus.thenbs.cloud
+  timeout_sec: 120
+auth:
+  strategy: storage_state
+  role: core
+  storage_state: ${LCA_STORAGE_STATE:-C:/project/nbs/lca-tool/apps/lca-tool/playwright-e2e/.auth/core.json}
+  login_recipe:
+    credentials_env:
+      username: E2E_CORE_USERNAME
+      password: E2E_CORE_PASSWORD
+    steps:
+    - action: goto
+      path: /sign-in
+    - action: click
+      locator:
+        role: button
+        name: Sign in
+    - action: wait_for
+      locator:
+        label: Email address
+      state: visible
+    - action: fill
+      locator:
+        label: Email address
+      value: ${E2E_CORE_USERNAME}
+    - action: click
+      locator:
+        role: button
+        name: Login
+    - action: fill
+      locator:
+        label: Password
+      value: ${E2E_CORE_PASSWORD}
+    - action: click
+      locator:
+        role: button
+        name: Login
+    - action: wait_for
+      locator:
+        testid: search-input-desktop
+      state: visible
+selectors:
+  test_id_attribute: data-testid
+  fallback:
+  - role
+  - label
+  - placeholder
+  - text
+issue_tracker:
+  provider: azure_devops
+  organization: ${AZDO_ORG:-https://dev.azure.com/thenbs}
+  project: ${AZDO_PROJECT:-Cirrus}
+  team: ${AZDO_TEAM:-LCA}
+  pat_env: AZURE_DEVOPS_EXT_PAT
+  sprint_field: IterationPath
+  sprint_match: Sprint {n}
+source:
+  framework: react
+  repo_path: C:/project/nbs/lca-tool/apps/lca-tool/web
+  router_file: src/app/routes.tsx
+  e2e_path: C:/project/nbs/lca-tool/apps/lca-tool/playwright-e2e
+feature_map:
+  search: /search
+  search_objects: /search/objects?search=<keywords>
+  product_detail: /products/:slug/:objectId
+  projects: /projects
+  project_create: /projects/create
+  project_overview: /projects/overview/:projectId
+  compare: /compare
+  manufacturers: /browse/manufacturers
+  operators: /browse/program-operators
+  classifications: /browse/classifications
+  epd_certificate: /epd/:slug/:objectId
+  whats_new: /whats-new
+glossary_path: profiles/lca-tool/glossary.json
+style_path: profiles/lca-tool/style.md

@@ -1,0 +1,76 @@
+# Example generated flow — the artifact Claude emits and a human reviews before
+# recording. Selectors here are REAL data-testids / aria-labels read from the
+# lca-tool web source. This demonstrates two sprint tasks in one video.
+#
+# Pacing note: every step with `say:` holds until its narration audio finishes
+# (audio-driven pacing), so the recorded video is exactly as long as the
+# voiceover — no manual timing, no freeze-frames.
+
+version: 1
+name: search-and-compare
+title: "Search products and compare sustainability data"
+project: lca-tool
+locale: en
+viewport: { width: 1280, height: 720 }
+
+beats:
+  # ── Task 90396: product search ────────────────────────────────────────────
+  - task: 90396
+    title: "Product search"
+    steps:
+      - action: goto
+        path: "/search"
+        say: "Let's start on the search page, where teams find construction products in the NBS LCA database."
+
+      - action: fill
+        locator: { label: "Search NBS LCA" }   # aria-label; the testid here is dynamic, so label is the stable choice
+        value: "concrete"
+        say: "I'll search for concrete."
+
+      - action: press
+        keys: "Enter"
+        settle_ms: 800                          # let results load before narrating about them
+
+      - action: wait_for
+        locator: { testid: item }               # result tiles rendered
+        state: visible
+
+      - action: dwell
+        say: "Each result shows the manufacturer, the product name, and its A1 to A3 embodied-carbon value at a glance."
+        min_duration_sec: 3
+
+      - action: click
+        locator: { testid: view-toggle-list-button }
+        say: "Switching to list view gives a denser, comparison-friendly layout."
+
+  # ── Task 90397: compare products ──────────────────────────────────────────
+  - task: 90397
+    title: "Compare products"
+    steps:
+      - action: click
+        locator: { testid: item-compare-checkbox, nth: 0 }
+        say: "To compare options, I select the first product,"
+
+      - action: click
+        locator: { testid: item-compare-checkbox, nth: 1 }
+        say: "and a second one. They're added to the compare tray at the bottom."
+
+      - action: wait_for
+        locator: { testid: compare-item-chip }
+        state: visible
+
+      - action: click
+        locator: { role: button, name: "Compare" }   # banner CTA — semantic fallback (no testid); flagged for review
+        say: "Opening the compare view puts their sustainability data side by side."
+
+      - action: wait_for
+        locator: { testid: appbar }             # compare page shell
+        state: visible
+
+      - action: scroll_to
+        locator: { text: "Global warming potential" }
+        say: "Here we can line up global-warming-potential and the full set of environmental indicators,"
+
+      - action: dwell
+        say: "so specifiers can pick the lower-carbon product with confidence — all without leaving the tool."
+        min_duration_sec: 3

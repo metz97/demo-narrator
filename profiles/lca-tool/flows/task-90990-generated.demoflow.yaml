@@ -1,0 +1,30 @@
+# Generated flow for LCA - Search result page - Add search filter for program operator. Review before running:
+#   demo-narrator demo --project lca-tool --flow profiles/lca-tool/flows/task-90990-generated.demoflow.yaml
+
+name: task-90990-generated
+title: LCA - Search result page - Add search filter for program operator
+project: lca-tool
+locale: en
+beats:
+- task: 90990
+  title: LCA - Search result page - Add search filter for program operator
+  steps:
+  - action: goto
+    path: http://localhost:4200/en/search/objects?search=door
+    say: Searching for "door" brings up the search results page with filter options
+      on the left.
+    settle_ms: 1200
+  - action: click
+    locator:
+      testid: filter-manufacturer-label
+      nth: 1
+    say: Checking dormakaba International Holding GmbH under Manufacturer narrows
+      the list to matching products.
+    settle_ms: 1200
+  - action: wait_for
+    locator:
+      testid: loading-spinner
+    state: hidden
+    say: The product list refreshes to show only results for the selected manufacturer.
+    settle_ms: 1000
+version: 1

@@ -1,0 +1,22 @@
+# systemd unit for a bare-VM (non-Docker) deployment.
+#   sudo cp deploy/demo-narrator.service /etc/systemd/system/
+#   sudo systemctl enable --now demo-narrator
+# Assumes the repo is checked out at /opt/demo-narrator with a prepared venv:
+#   python3 -m venv .venv && .venv/bin/pip install ".[server,demo,kokoro]"
+#   .venv/bin/playwright install --with-deps chromium
+[Unit]
+Description=demo-narrator web server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=demonarrator
+WorkingDirectory=/opt/demo-narrator
+EnvironmentFile=/opt/demo-narrator/.env
+ExecStart=/opt/demo-narrator/.venv/bin/demo-narrator serve --host 0.0.0.0 --port 8765
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

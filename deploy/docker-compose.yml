@@ -1,0 +1,27 @@
+# Single-tenant demo-narrator server. From the repo root:
+#   docker compose -f deploy/docker-compose.yml up -d
+# The workspace directory (profiles/, config/, output/) lives on the HOST so
+# flows/videos survive rebuilds and stay editable from the CLI too.
+services:
+  demo-narrator:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8765:8765"
+    volumes:
+      # workspace: profiles/, config/config.yaml, output/ (must set
+      # workspace_root: /workspace in config, or leave "." and mount at /workspace)
+      - ../:/workspace
+    env_file:
+      - ../.env        # E2E_CORE_*, AZURE_DEVOPS_EXT_PAT, ANTHROPIC_API_KEY
+    environment:
+      # servers should use the API, not a personal Claude subscription:
+      # set claude.mode: api_key in config/config.yaml and provide the key here.
+      - HF_HOME=/workspace/output/.hf-cache   # keep Kokoro weights in the volume
+    restart: unless-stopped
+    # Recording + TTS are CPU-bound; give it room.
+    deploy:
+      resources:
+        limits:
+          memory: 8g
